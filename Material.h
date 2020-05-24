@@ -1,5 +1,7 @@
 #include <iostream>
-
+#pragma once  //Directiva para evitar redefinición de clase
+//#ifndef MATERIAL_H            <--  equivale a 
+//#define MATERIAL_H
 using namespace std;
 
 class Material
@@ -12,7 +14,7 @@ class Material
         void setTitulo(string t) {titulo = t;};
         
         int getIdMaterial() {return idMaterial;};
-        string titulo() {return titulo;};
+        string getTitulo() {return titulo;};
         
         virtual void muestraDatos() = 0;
         virtual int cantidadDiasPrestamo() = 0;
