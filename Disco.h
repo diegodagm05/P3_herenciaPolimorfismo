@@ -1,8 +1,9 @@
 #include <iostream>
+#include "Material.h"
 
 using namespace std;
 
-class Disco
+class Disco : public Material
 {
     public:
         Disco();
@@ -14,7 +15,8 @@ class Disco
         int getDuracion() {return duracion;};
         string getGenero() {return genero;};
         
-        //Métodos abstractos
+        void muestraDatos();
+        int cantidadDiasPrestamo();
         
     private:
         int duracion;
