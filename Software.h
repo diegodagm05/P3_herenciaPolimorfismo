@@ -1,8 +1,9 @@
 #include <iostream>
+#include "Material.h"
 
 using namespace std;
 
-class Software
+class Software : public Material
 {
     public:
         Software();
@@ -14,7 +15,8 @@ class Software
         int getVersion() {return version;};
         string getSO() {return SO;};
         
-        //Métodos abstractos
+        void muestraDatos();
+        int cantidadDiasPrestamo();
         
     private:
         int version;
