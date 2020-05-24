@@ -15,7 +15,8 @@ class Libro : public Material
         int getNumPag() {return numPag;};
         string getAutor() {return autor;};
         
-        //MÃ©todos abstractos
+        void muestraDatos();
+        int cantidadDiasPrestamo();
         
     private:
         int numPag;
@@ -42,3 +43,6 @@ int Libro::cantidadDiasPrestamo()
 {
     return 7;
 }
+
+
+
