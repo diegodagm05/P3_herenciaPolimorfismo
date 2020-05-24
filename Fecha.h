@@ -44,7 +44,7 @@ Fecha::Fecha(int dd, int mm, int aa)
     this->aa = aa;
 }
 
-bool Fecha::operator>(Fecha f1) //Ya sirve
+bool Fecha::operator>(Fecha f1)
 {
     if(aa>f1.getAa())
         return true;
@@ -63,7 +63,7 @@ bool Fecha::operator>(Fecha f1) //Ya sirve
     else return false;
 }
 
-bool Fecha::operator>=(Fecha f1) //Ya sirve
+bool Fecha::operator>=(Fecha f1)
 {
     if(aa>f1.getAa())
         return true;
@@ -82,7 +82,7 @@ bool Fecha::operator>=(Fecha f1) //Ya sirve
     else return false;
 }
 
-bool Fecha::operator<(Fecha f1) //Ya sirve
+bool Fecha::operator<(Fecha f1)
 {
     if(aa<f1.getAa())
         return true;
@@ -101,7 +101,7 @@ bool Fecha::operator<(Fecha f1) //Ya sirve
     else return false;
 }    
 
-bool Fecha::operator<=(Fecha f1)
+bool Fecha::operator<=(Fecha f1) 
 {
     if(aa<f1.getAa())
         return true;
@@ -120,14 +120,14 @@ bool Fecha::operator<=(Fecha f1)
     else return false;    
 }
 
-bool Fecha::operator==(Fecha f1) //Ya sirve
+bool Fecha::operator==(Fecha f1)
 {
     if(aa==f1.getAa() && mm==f1.getMm() && dd==f1.getDd())
         return true;
     else return false;
 }
 
-Fecha Fecha::operator+(int dias) //Ya sirve
+Fecha Fecha::operator+(int dias)
 {   a:
     dd = dd + dias;
     if((mm==1||mm==3||mm==5||mm==7||mm==8||mm==10)&&dd>31)
