@@ -27,7 +27,7 @@ class Material
 Material::Material()
 {
     idMaterial = 0;
-    titulo = "N/A";
+    titulo = "N/D";
 }
 
 Material::Material(int idMaterial, string titulo)
