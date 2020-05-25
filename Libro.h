@@ -26,7 +26,7 @@ class Libro : public Material
 Libro::Libro() : Material()
 {
     numPag = 0;
-    autor = "N/A";
+    autor = "N/D";
 }
 
 Libro::Libro(int idm, string t, int numPag, string autor) : Material(idm, t)
@@ -36,7 +36,7 @@ Libro::Libro(int idm, string t, int numPag, string autor) : Material(idm, t)
 }
 void Libro::muestraDatos()
 {
-    cout<<"Libro"<<idMaterial<<titulo<<numPag<<autor<<endl;
+    cout<<"[L] - "<<idMaterial<<" "<<titulo<<" "<<numPag<<" "<<autor<<endl;
 }
 
 int Libro::cantidadDiasPrestamo()
