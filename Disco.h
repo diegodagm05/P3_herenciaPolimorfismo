@@ -26,7 +26,7 @@ class Disco : public Material
 Disco::Disco() : Material()
 {
     duracion = 0;
-    genero = "N/A";
+    genero = "N/D";
 }
 
 Disco::Disco(int idm, string t, int duracion, string genero) : Material(idm, t)
@@ -37,10 +37,11 @@ Disco::Disco(int idm, string t, int duracion, string genero) : Material(idm, t)
 
 void Disco::muestraDatos()
 {
-    cout<<"Disco"<<idMaterial<<titulo<<duracion<<genero<<endl;
+    cout<<"[D] - "<<idMaterial<<" "<<titulo<<" "<<duracion<<" "<<genero<<endl;
 }
 
 int Disco::cantidadDiasPrestamo()
 {
     return 2;
 }
+
