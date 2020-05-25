@@ -166,7 +166,9 @@ Fecha Fecha::operator+(int dias)
 ostream &operator <<(ostream &o, Fecha f)
 {
     string mes;
-    if (f.mm==1)
+    if (f.mm==0)
+        mes = "ND";
+    else if (f.mm==1)
         mes = "ENE";
     else if (f.mm==2)
         mes = "FEB";
@@ -190,7 +192,8 @@ ostream &operator <<(ostream &o, Fecha f)
         mes = "NOV";
     else if (f.mm==12)
         mes = "DIC";
-        
+    if(f.dd<10)
+        cout<<"0";
     o<<f.dd<<"/"<<mes<<"/"<<f.aa;
     return o;
 }
