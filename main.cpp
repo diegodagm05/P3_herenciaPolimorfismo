@@ -129,21 +129,21 @@ int main()
         
         cout<<"Ingrese el id del Material: "; cin>>iDado;
         noen2=0;
-        for(int k=0; k<listmat; k++)
+        for(int i=0; i<listmat; i++)
         {
-            iM2 = materiales[k]->getIdMaterial();
+            iM2 = materiales[i]->getIdMaterial();
             if(iDado==iM2)
             {
                 noen3=0;
-                for(int l=0; l<listres; l++)
+                for(int j=0; j<listres; j++)
                 {
-                    iR2 = reservaciones[l].getIdMaterial();
+                    iR2 = reservaciones[j].getIdMaterial();
                     if(iDado==iR2)
                     {
-                        finicio = reservaciones[l].getFechaReservacion();
-                        dias2 = materiales[k]->cantidadDiasPrestamo();
-                        ffin = reservaciones[l].calculaFechaFinReserva(dias2);
-                        cout<<"Titulo: "<<materiales[k]->getTitulo()<<endl;
+                        finicio = reservaciones[j].getFechaReservacion();
+                        dias2 = materiales[i]->cantidadDiasPrestamo();
+                        ffin = reservaciones[j].calculaFechaFinReserva(dias2);
+                        cout<<"Titulo: "<<materiales[i]->getTitulo()<<endl;
                         cout<<"Inicio Rsv: "<<finicio<<endl;
                         cout<<"Fin Rsv: "<<ffin<<endl;
                         goto menu;
@@ -170,7 +170,37 @@ int main()
     
     else if(op=='D'||op=='d')
     {
-        
+        int noen4, iR3, iM3, dias3, noen5=0;
+        string nombMat1;
+        Fecha fDada, finicio1, ffin1;
+        cout<<"Ingresa la fecha "<<endl;
+        cin>>fDada;
+        for (int i=0; i<listres; i++)
+        {   
+            iR3 = reservaciones[i].getIdMaterial();
+            finicio1 = reservaciones[i].getFechaReservacion();
+            for(int j=0; j<listmat; j++)
+            {
+                iM3 = materiales[j]->getIdMaterial();
+                if(iR3==iM3)
+                {
+                    dias3 = materiales[j]->cantidadDiasPrestamo();
+                    nombMat1 = materiales[j]->getTitulo();
+                }
+            }
+            ffin1 = reservaciones[i].calculaFechaFinReserva(dias3);
+            if(fDada>=finicio1 && fDada<=ffin1)
+            {
+                cout<<nombMat1<<" "<<reservaciones[i].getIdCliente()<<endl;
+            }
+            else noen5++;
+            if(noen5==listres)
+            {
+                cout<<"NO hay reservaciones en la fecha " << fDada<<endl;
+                goto menu;
+            }
+            
+        }
         goto menu;
     }
     
