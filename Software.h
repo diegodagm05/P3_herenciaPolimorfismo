@@ -26,7 +26,7 @@ class Software : public Material
 Software::Software() : Material()
 {
     version = 0;
-    SO = "N/A";
+    SO = "N/D";
 }
 
 Software::Software(int idm, string t, int version, string SO) : Material(idm, t)
@@ -37,7 +37,7 @@ Software::Software(int idm, string t, int version, string SO) : Material(idm, t)
 
 void Software::muestraDatos()
 {
-    cout<<"Software"<<idMaterial<<titulo<<version<<SO<<endl;
+    cout<<"[S] - "<<idMaterial<<" "<<titulo<<" "<<version<<" "<<SO<<endl;
 }
 
 int Software::cantidadDiasPrestamo()
