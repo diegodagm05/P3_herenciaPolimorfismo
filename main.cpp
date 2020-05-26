@@ -19,6 +19,11 @@ int main()
     
     int idM, dato1, listmat=0, listlib=0, listdis=0, listsoft=0; 
     string titulo, dato2;
+    
+    int idMatR, idCli; //Variables usadas para hacer una reservacion
+    Fecha faRsv;       //Es necesario que sea scope global para usar en 2 ifs
+    bool rsvNuev = false;
+    
     char tipo;
     Libro l[30];
     Disco d[30];
@@ -204,13 +209,77 @@ int main()
         goto menu;
     }
     
-    else if(op=='E'||op=='e'){
-        
+    else if(op=='E'||op=='e')
+    {
+        cout<<"Ingrese el Id del material a reservar: "; cin>> idMatR;
+        int noen6=0, noen7;
+        bool disp = false;
+        for(int i=0; i<listmat; i++)
+        {
+            if(idMatR == materiales[i]->getIdMaterial())
+            {
+                cout<<"[Ingrese la fecha en que desea reservar]"<<endl;
+                cin>>faRsv;
+                noen7 = 0;
+                for(int j=0; j<listres; j++)
+                {
+                    int dias4 = materiales[i]->cantidadDiasPrestamo();
+                    Fecha fResI, fResF;
+                    if(idMatR==reservaciones[j].getIdMaterial())
+                    {
+                        fResI = reservaciones[j].getFechaReservacion();
+                        fResF = reservaciones[j].calculaFechaFinReserva(dias4);
+                        if(faRsv<fResI || faRsv>fResF)
+                            disp = true;
+                        else{
+                            cout<<"El Material no esta disponible en la fecha " <<faRsv<<endl;
+                            goto menu;
+                        }
+                    }
+                    else noen7++;
+                    if(noen7==listres||disp)
+                    {
+                        cout<<"[Material disponible] Ingrese id Cliente: ";cin>>idCli;
+                        cout<<"[Reservacion Hecha]"<<endl;
+                        reservaciones[listres].setIdMaterial(idMatR);
+                        reservaciones[listres].setIdCliente(idCli);
+                        reservaciones[listres].setFechaReservacion(faRsv);
+                        listres++;
+                        rsvNuev = true; 
+                        goto menu;
+                    }
+                }
+            }
+            else noen6++;
+            if (noen6 ==listmat)
+            {
+                cout<<"No existe material con Id "<<idMat;
+                goto menu;
+            }
+        }
         goto menu;
     }
     
-    else if(op=='F'||op=='f')
+    else if(op=='F'||op=='f'){
+        if(rsvNuev)
+        {
+            int d, m, a, id1, id2;
+            ofstream archS;
+            archS.open("Reserva2.txt");
+            for(int i=0; i<listres;i++)
+            {
+                d = reservaciones[i].getFechaReservacion().getDd();
+                m = reservaciones[i].getFechaReservacion().getMm();
+                a = reservaciones[i].getFechaReservacion().getAa();
+                id1 = reservaciones[i].getIdMaterial();
+                id2 = reservaciones[i].getIdCliente();
+                archS<<d<<" "<<m<<" "<<a<<" "<<id1<<" "<<id2<<endl;
+            }
+            archS.close();
+            cout<<"[Reservaciones Actualizadas]"<<endl;
+        }
         return 0;
+    }
     else {cout<<"Opcion Invalida"<<endl; goto menu;}
 
 
