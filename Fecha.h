@@ -23,6 +23,8 @@ class Fecha
         friend ostream &operator <<(ostream &o, Fecha f);
         friend istream &operator >>(istream &i, Fecha &f);
         
+        bool validarFecha();
+        
         
     private:
        int dd;
@@ -209,4 +211,32 @@ istream &operator >>(istream &i, Fecha &f)
     return i;
 }
 
-
+bool Fecha::validarFecha()
+{
+    if(aa<1 || aa>9999){
+        cout<<"[ERROR] Anio incorrecto"<<endl;
+        return false;
+    }
+    else if(dd<1){
+        cout<<"[ERROR] el dia es menor a 1"<<endl;
+        return false;
+    }
+    else if((mm==1||mm==3||mm==5||mm==7||mm==8||mm==10||mm==12)&&dd>31){
+        cout<<"[ERROR] El mes no puede tener mas de 31 dias"<<endl;
+        return false;
+    }
+    else if(mm==2 && dd>28){
+        cout<<"[ERROR] El mes no puede tener mas de 28 dias"<<endl;
+        return false;
+    }
+    else if((mm==4||mm==6||mm==9||mm==11)&&dd>30){
+        cout<<"[ERROR] El mes no puede tener mas de 30 dias"<<endl;
+        return false;
+    }
+    else if (mm>12){
+        cout<<"[ERROR] El mes es mayor a 12 "<<endl;
+        return false;
+    }
+    else return true;
+    
+}
