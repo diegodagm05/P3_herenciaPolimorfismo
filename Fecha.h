@@ -22,6 +22,7 @@ class Fecha
         Fecha operator+(int);
         friend ostream &operator <<(ostream &o, Fecha f);
         friend istream &operator >>(istream &i, Fecha &f);
+        string nombreMes();
         
         bool validarFecha();
         
@@ -167,36 +168,9 @@ Fecha Fecha::operator+(int dias)
 
 ostream &operator <<(ostream &o, Fecha f)
 {
-    string mes;
-    if (f.mm==0)
-        mes = "ND";
-    else if (f.mm==1)
-        mes = "ENE";
-    else if (f.mm==2)
-        mes = "FEB";
-    else if (f.mm==3)
-        mes = "MAR";
-    else if (f.mm==4)
-        mes = "ABR";  
-    else if (f.mm==5)
-        mes = "MAY";
-    else if (f.mm==6)
-        mes = "JUN";
-    else if (f.mm==7)
-        mes = "JUL";
-    else if (f.mm==8)
-        mes = "AGO";
-    else if (f.mm==9)
-        mes = "SEP";
-    else if (f.mm==10)
-        mes = "OCT";
-    else if (f.mm==11)
-        mes = "NOV";
-    else if (f.mm==12)
-        mes = "DIC";
     if(f.dd<10)
         cout<<"0";
-    o<<f.dd<<"/"<<mes<<"/"<<f.aa;
+    o<<f.dd<<"/"<<f.nombreMes()<<"/"<<f.aa;
     return o;
 }
 
@@ -209,6 +183,38 @@ istream &operator >>(istream &i, Fecha &f)
     cout<<"Anio: ";
     i >> f.aa;
     return i;
+}
+
+string Fecha::nombreMes()
+{
+    string mes;
+    if (mm==0)
+        mes = "ND";
+    else if (mm==1)
+        mes = "ENE";
+    else if (mm==2)
+        mes = "FEB";
+    else if (mm==3)
+        mes = "MAR";
+    else if (mm==4)
+        mes = "ABR";  
+    else if (mm==5)
+        mes = "MAY";
+    else if (mm==6)
+        mes = "JUN";
+    else if (mm==7)
+        mes = "JUL";
+    else if (mm==8)
+        mes = "AGO";
+    else if (mm==9)
+        mes = "SEP";
+    else if (mm==10)
+        mes = "OCT";
+    else if (mm==11)
+        mes = "NOV";
+    else if (mm==12)
+        mes = "DIC";
+    return mes;
 }
 
 bool Fecha::validarFecha()
