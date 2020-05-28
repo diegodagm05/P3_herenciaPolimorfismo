@@ -17,22 +17,23 @@ int main()
     ifstream archE;
     archE.open("Material.txt");
     
-    int idM, dato1, listmat=0, listlib=0, listdis=0, listsoft=0; 
-    string titulo, dato2;
+    int listres=0, listmat=0, listlib=0, listdis=0, listsoft=0; //Contadores de arreglos
     
-    int idMatR, idCli; //Variables usadas para hacer una reservacion
-    Fecha faRsv;       //Es necesario que sea scope global para usar en 2 ifs
-    bool rsvNuev = false;
+    int idMat, idMatR, idC, dato1, di, me, an, dias, cont, cont1; //Variables de los objetos
+    string titulo, dato2;
+    bool rsvNuev = false; //variable para crear reservas nuevas
+    
+    Fecha fIniR, fFinR, faRsv;
     
     char tipo;
     Libro l[30];
     Disco d[30];
     Software s[30];
     
-    while(archE>>idM>>titulo>>tipo>>dato1>>dato2)
+    while(archE>>idMat>>titulo>>tipo>>dato1>>dato2)
     {
         if (tipo == 'L'){
-            l[listlib].setIdMaterial(idM);
+            l[listlib].setIdMaterial(idMat);
             l[listlib].setTitulo(titulo);
             l[listlib].setNumPag(dato1);
             l[listlib].setAutor(dato2);
@@ -40,7 +41,7 @@ int main()
             listlib++;
         }
         else if(tipo == 'D'){
-            d[listdis].setIdMaterial(idM);
+            d[listdis].setIdMaterial(idMat);
             d[listdis].setTitulo(titulo);
             d[listdis].setDuracion(dato1);
             d[listdis].setGenero(dato2);
@@ -48,7 +49,7 @@ int main()
             listdis++;
         }
         else if(tipo == 'S'){
-            s[listsoft].setIdMaterial(idM);
+            s[listsoft].setIdMaterial(idMat);
             s[listsoft].setTitulo(titulo);
             s[listsoft].setVersion(dato1);
             s[listsoft].setSO(dato2);
@@ -60,15 +61,13 @@ int main()
     }
     archE.close();
     
-    
     archE.open("Reserva.txt");
-    int di, me, an, idMat, idC, listres=0;
-    while(archE>>di>>me>>an>>idMat>>idC)
+    while(archE>>di>>me>>an>>idMatR>>idC)
     {
         Fecha fechaR;
         fechaR.setFecha(di, me, an);
         reservaciones[listres].setFechaReservacion(fechaR);
-        reservaciones[listres].setIdMaterial(idMat);
+        reservaciones[listres].setIdMaterial(idMatR);
         reservaciones[listres].setIdCliente(idC);
         listres++;
     }
@@ -95,78 +94,73 @@ int main()
     }
     
     else if(op=='B'||op=='b'){
-        int iR, iM, dias, iC, noen1;
-        string nombMat;
-        Fecha inicioR, finR;
-        
         cout<<"                          [RESERVACIONES]"<<endl;
         cout<<"[InicioReserva]\t"<<"[FinReserva]\t"<<"[NombreMaterial]\t"<<"\t[IdCliente]"<<endl;
         for (int i = 0; i<listres; i++) //Ciclo para impimir
         {   
-            iR = reservaciones[i].getIdMaterial();
-            noen1=0;
+            idMatR = reservaciones[i].getIdMaterial();
+            cont=0;
             for(int j = 0; j<listmat; j++) //Ciclo para buscar datos
             {   
-                iM = materiales[j]->getIdMaterial();
-                if(iR ==  iM)
+                idMat = materiales[j]->getIdMaterial();
+                if(idMatR ==  idMat)
                 {
                     dias = materiales[j]->cantidadDiasPrestamo();
-                    nombMat = materiales[j]->getTitulo();
+                    titulo = materiales[j]->getTitulo();
                 }
-                else if(iR != iM)
-                    noen1++;
+                else if(idMatR != idMat)
+                    cont++;
             }
-            if(noen1==listmat)
-                cout<<"El id "<<iR<<" no está registrado en Materiales"<<endl;
-            iC = reservaciones[i].getIdCliente();
-            inicioR = reservaciones[i].getFechaReservacion();
-            finR = reservaciones[i].calculaFechaFinReserva(dias);
+            if(cont==listmat)
+                cout<<"El id "<<idMatR<<" no está registrado en Materiales"<<endl;
+            idC = reservaciones[i].getIdCliente();
+            fIniR = reservaciones[i].getFechaReservacion();
+            fFinR = reservaciones[i].calculaFechaFinReserva(dias);
             
-            cout<<inicioR<<"\t"<<finR<<"\t"<<nombMat<<setw(40-nombMat.length())<<iC<<endl;
+            cout<<fIniR<<"\t"<<fFinR<<"\t"<<titulo<<setw(40-titulo.length())<<idC<<endl;
         }
         cout<<endl;
         goto menu;
     }
     
     else if(op=='C'||op=='c'){
-        int iDado,iR2, iM2, dias2, noen2, noen3;
-        Fecha finicio, ffin;
-        
-        cout<<"Ingrese el id del Material: "; cin>>iDado;
-        noen2=0;
+        int idDado;
+        cout<<"Ingrese el id del Material: "; cin>>idDado;
+        cont=0;
         for(int i=0; i<listmat; i++)
         {
-            iM2 = materiales[i]->getIdMaterial();
-            if(iDado==iM2)
+            idMat = materiales[i]->getIdMaterial();
+            if(idDado==idMat)
             {
-                noen3=0;
+                cont1=0;
                 for(int j=0; j<listres; j++)
                 {
-                    iR2 = reservaciones[j].getIdMaterial();
-                    if(iDado==iR2)
+                    idMatR = reservaciones[j].getIdMaterial();
+                    if(idDado==idMatR)
                     {
-                        finicio = reservaciones[j].getFechaReservacion();
-                        dias2 = materiales[i]->cantidadDiasPrestamo();
-                        ffin = reservaciones[j].calculaFechaFinReserva(dias2);
+                        fIniR = reservaciones[j].getFechaReservacion();
+                        dias = materiales[i]->cantidadDiasPrestamo();
+                        fFinR = reservaciones[j].calculaFechaFinReserva(dias);
                         cout<<"Titulo: "<<materiales[i]->getTitulo()<<endl;
-                        cout<<"Inicio Rsv: "<<finicio<<endl;
-                        cout<<"Fin Rsv: "<<ffin<<endl;
-                        goto menu;
+                        cout<<"Inicio Rsv: "<<fIniR<<endl;
+                        cout<<"Fin Rsv: "<<fFinR<<endl;
+                        cout<<endl;
+                        //goto menu;
                     }
-                    else if(iDado!=iR2)
-                        noen3++;
-                    if (noen3==listres)
+                    else if(idDado!=idMatR)
+                        cont1++;
+                    if (cont1==listres)
                     {
-                        cout<<"El id "<< iDado<<" NO está reservado"<<endl;
+                        cout<<"El id "<< idDado<<" NO está reservado"<<endl;
                         goto menu;
                     }
                 }
             }
-            else if (iDado != iM2)
-                noen2++;
-            if (noen2==listmat)
+            else if (idDado != idMat)
+                cont++;
+            if (cont==listmat)
             {
-                cout<<"El id "<<iDado<< " NO se encuentra en materiales"<<endl;
+                cout<<"El id "<<idDado<< " NO se encuentra en materiales"<<endl;
                 goto menu;
             }
         }
@@ -175,31 +169,34 @@ int main()
     
     else if(op=='D'||op=='d')
     {
-        int noen4, iR3, iM3, dias3, noen5=0;
-        string nombMat1;
-        Fecha fDada, finicio1, ffin1;
+        fechaN:
+        Fecha fDada;
+        cont=0;
         cout<<"Ingresa la fecha "<<endl;
         cin>>fDada;
+        if(!fDada.validarFecha()){
+            goto fechaN;
+        }
         for (int i=0; i<listres; i++)
         {   
-            iR3 = reservaciones[i].getIdMaterial();
-            finicio1 = reservaciones[i].getFechaReservacion();
+            idMatR = reservaciones[i].getIdMaterial();
+            fIniR = reservaciones[i].getFechaReservacion();
             for(int j=0; j<listmat; j++)
             {
-                iM3 = materiales[j]->getIdMaterial();
-                if(iR3==iM3)
+                idMat = materiales[j]->getIdMaterial();
+                if(idMatR==idMat)
                 {
-                    dias3 = materiales[j]->cantidadDiasPrestamo();
-                    nombMat1 = materiales[j]->getTitulo();
+                    dias = materiales[j]->cantidadDiasPrestamo();
+                    titulo = materiales[j]->getTitulo();
                 }
             }
-            ffin1 = reservaciones[i].calculaFechaFinReserva(dias3);
-            if(fDada>=finicio1 && fDada<=ffin1)
+            fFinR = reservaciones[i].calculaFechaFinReserva(dias);
+            if(fDada>=fIniR && fDada<=fFinR)
             {
-                cout<<nombMat1<<" "<<reservaciones[i].getIdCliente()<<endl;
+                cout<<titulo<<" "<<reservaciones[i].getIdCliente()<<endl;
             }
-            else noen5++;
-            if(noen5==listres)
+            else cont++;
+            if(cont==listres)
             {
                 cout<<"NO hay reservaciones en la fecha " << fDada<<endl;
                 goto menu;
@@ -212,48 +209,61 @@ int main()
     else if(op=='E'||op=='e')
     {
         cout<<"Ingrese el Id del material a reservar: "; cin>> idMatR;
-        int noen6=0, noen7;
+        cont=0;
         bool disp = false;
         for(int i=0; i<listmat; i++)
         {
             if(idMatR == materiales[i]->getIdMaterial())
             {
+                fecha:
                 cout<<"[Ingrese la fecha en que desea reservar]"<<endl;
                 cin>>faRsv;
-                noen7 = 0;
+                if(!faRsv.validarFecha()){
+                    goto fecha;
+                }
+                cont1 = 0;
                 for(int j=0; j<listres; j++)
                 {
-                    int dias4 = materiales[i]->cantidadDiasPrestamo();
-                    Fecha fResI, fResF;
+                    dias = materiales[i]->cantidadDiasPrestamo();
                     if(idMatR==reservaciones[j].getIdMaterial())
                     {
-                        fResI = reservaciones[j].getFechaReservacion();
-                        fResF = reservaciones[j].calculaFechaFinReserva(dias4);
-                        if(faRsv<fResI || faRsv>fResF)
+                        fIniR = reservaciones[j].getFechaReservacion();
+                        fFinR = reservaciones[j].calculaFechaFinReserva(dias);
+                        Fecha faRsvF = faRsv;
+                        faRsvF = faRsvF+dias;
+                        if(faRsvF<fIniR || faRsv>fFinR)
                             disp = true;
                         else{
                             cout<<"El Material no esta disponible en la fecha " <<faRsv<<endl;
                             goto menu;
                         }
                     }
-                    else noen7++;
-                    if(noen7==listres||disp)
-                    {
-                        cout<<"[Material disponible] Ingrese id Cliente: ";cin>>idCli;
+                    else cont1++; //Para saber si el material esta previamente reservado
+                    if((cont1==listres||disp)&&listres<60)
+                    {   idcliente:
+                        cout<<"[Material disponible] Ingrese id Cliente: ";cin>>idC;
+                        if(idC<0||idC>99999){
+                            cout<<"[ERROR] El id del cliente no esta en el rango"<<endl;
+                            goto idcliente;
+                        }
                         cout<<"[Reservacion Hecha]"<<endl;
                         reservaciones[listres].setIdMaterial(idMatR);
-                        reservaciones[listres].setIdCliente(idCli);
+                        reservaciones[listres].setIdCliente(idC);
                         reservaciones[listres].setFechaReservacion(faRsv);
                         listres++;
                         rsvNuev = true; 
                         goto menu;
                     }
+                    else if(idC>=60){
+                        cout<<"[ERROR] ya hay 60 reservaciones hechas"<<endl;
+                        goto menu;
+                    }
                 }
             }
-            else noen6++;
-            if (noen6 ==listmat)
+            else cont++;
+            if (cont ==listmat)
             {
-                cout<<"No existe material con Id "<<idMat;
+                cout<<"No existe material con Id "<<idMatR<<endl;
                 goto menu;
             }
         }
@@ -261,19 +271,18 @@ int main()
     }
     
     else if(op=='F'||op=='f'){
-        if(rsvNuev)
+        if(rsvNuev)//Solo entra cuando se hizo una reserva nueva
         {
-            int d, m, a, id1, id2;
             ofstream archS;
-            archS.open("Reserva2.txt");
+            archS.open("Reserva.txt");
             for(int i=0; i<listres;i++)
             {
-                d = reservaciones[i].getFechaReservacion().getDd();
-                m = reservaciones[i].getFechaReservacion().getMm();
-                a = reservaciones[i].getFechaReservacion().getAa();
-                id1 = reservaciones[i].getIdMaterial();
-                id2 = reservaciones[i].getIdCliente();
-                archS<<d<<" "<<m<<" "<<a<<" "<<id1<<" "<<id2<<endl;
+                di = reservaciones[i].getFechaReservacion().getDd();
+                me = reservaciones[i].getFechaReservacion().getMm();
+                an = reservaciones[i].getFechaReservacion().getAa();
+                idMatR = reservaciones[i].getIdMaterial();
+                idC = reservaciones[i].getIdCliente();
+                archS<<di<<" "<<me<<" "<<an<<" "<<idMatR<<" "<<idC<<endl;
             }
             archS.close();
             cout<<"[Reservaciones Actualizadas]"<<endl;
@@ -281,7 +290,6 @@ int main()
         return 0;
     }
     else {cout<<"Opcion Invalida"<<endl; goto menu;}
-
-
+    
     return 0;
 }
