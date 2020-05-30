@@ -193,7 +193,7 @@ int main()
             fFinR = reservaciones[i].calculaFechaFinReserva(dias);
             if(fDada>=fIniR && fDada<=fFinR)
             {
-                cout<<titulo<<" "<<reservaciones[i].getIdCliente()<<endl;
+                cout<<"Titulo: "<<titulo<<" "<<"IdCliente: "<<reservaciones[i].getIdCliente()<<endl;
             }
             else cont++;
             if(cont==listres)
@@ -254,7 +254,7 @@ int main()
                         rsvNuev = true; 
                         goto menu;
                     }
-                    else if(idC>=60){
+                    else if(listres>=60){
                         cout<<"[ERROR] ya hay 60 reservaciones hechas"<<endl;
                         goto menu;
                     }
